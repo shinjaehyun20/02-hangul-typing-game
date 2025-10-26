@@ -11,7 +11,8 @@ export class GameScreen {
     this.score = 0;
     this.correctCount = 0;
     this.wrongCount = 0;
-    this.isLoading = true;  // ✅ 추가
+    this.isLoading = true;
+    this.feedback = ''; // 💡 피드백 상태 추가
     this.loadWords();
   }
 
@@ -20,13 +21,10 @@ export class GameScreen {
       const response = await fetch('./data/words.json');
       const data = await response.json();
       this.words = data[this.level] || [];
-      
       const settings = window.appStorage.getSettings();
       this.words = this.words.slice(0, settings.wordsPerGame);
       this.currentWord = this.words[0];
-      this.isLoading = false;  // ✅ 로딩 완료
-      
-      // ✅ 다시 렌더링
+      this.isLoading = false;
       document.getElementById('app').innerHTML = this.render();
       this.attachEvents();
     } catch (error) {
@@ -34,14 +32,12 @@ export class GameScreen {
       this.words = ['오류', '발생'];
       this.currentWord = this.words[0];
       this.isLoading = false;
-      
       document.getElementById('app').innerHTML = this.render();
       this.attachEvents();
     }
   }
 
   render() {
-    // ✅ 로딩 중일 때
     if (this.isLoading) {
       return `
         <div class="game-container">
@@ -54,29 +50,27 @@ export class GameScreen {
     }
 
     const progress = ((this.wordIndex) / this.words.length) * 100;
-    
     return `
       <div class="game-container">
         <div class="progress-bar">
           <div class="progress-fill" style="width: ${progress}%"></div>
           <span class="progress-text">${this.wordIndex + 1} / ${this.words.length}</span>
         </div>
-        
         <div class="word-display">
           <h2 class="current-word">${this.currentWord}</h2>
         </div>
-        
         <div class="input-section">
           <input 
             type="text" 
             id="wordInput" 
-            value="${this.userInput}"
             placeholder="여기에 입력하세요"
             autocomplete="off"
             autofocus
           >
+          <div class="feedback">
+            ${this.feedback ? `<span>${this.feedback}</span>` : ''}
+          </div>
         </div>
-        
         <div class="stats">
           <div class="stat-item">
             <span class="stat-label">점수</span>
@@ -91,7 +85,6 @@ export class GameScreen {
             <span class="stat-value">${this.wrongCount}</span>
           </div>
         </div>
-        
         <button id="quitGame" class="btn-secondary">게임 종료</button>
       </div>
     `;
@@ -100,8 +93,9 @@ export class GameScreen {
   attachEvents() {
     const input = document.getElementById('wordInput');
     if (input) {
+      input.value = '';
       input.focus();
-      input.addEventListener('input', (e) => this.handleInput(e));
+      input.oninput = (e) => this.handleInput(e);
     }
 
     const quitBtn = document.getElementById('quitGame');
@@ -114,10 +108,26 @@ export class GameScreen {
 
   handleInput(e) {
     this.userInput = e.target.value;
-    
     if (this.userInput === this.currentWord) {
-      this.handleCorrect();
+      this.feedback = '정답!';
+      document.getElementById('app').innerHTML = this.render();
+      this.attachEvents();
+      setTimeout(() => {
+        this.feedback = '';
+        this.handleCorrect();
+      }, 700);
+      return;
     }
+    // 오답 피드백이 필요하면 아래 else 블록 참고
+    // else {
+    //   this.feedback = '오답!';
+    //   document.getElementById('app').innerHTML = this.render();
+    //   this.attachEvents();
+    //   setTimeout(() => {
+    //     this.feedback = '';
+    //     this.handleWrong();
+    //   }, 700);
+    // }
   }
 
   handleCorrect() {
@@ -130,26 +140,23 @@ export class GameScreen {
   handleWrong() {
     window.appSound.playWrong();
     this.wrongCount++;
+    this.nextWord();
   }
 
   nextWord() {
     this.wordIndex++;
-    
     if (this.wordIndex >= this.words.length) {
       this.endGame();
       return;
     }
-    
     this.currentWord = this.words[this.wordIndex];
     this.userInput = '';
-    
     document.getElementById('app').innerHTML = this.render();
     this.attachEvents();
   }
 
   endGame() {
     window.appSound.playComplete();
-    
     const result = {
       level: this.level,
       score: this.score,
@@ -159,7 +166,6 @@ export class GameScreen {
       accuracy: Math.round((this.correctCount / this.words.length) * 100),
       grade: this.calculateGrade()
     };
-    
     window.appStorage.saveProgress(this.level, result);
     this.router.navigate('result', result);
   }
