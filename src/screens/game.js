@@ -13,7 +13,8 @@ export class GameScreen {
     this.wrongCount = 0;
     this.isLoading = true;
     this.feedback = ''; // 💡 피드백 상태 추가
-    this.loadWords();
+  this.isProcessing = false; // 정답 처리 중 여부
+  this.loadWords();
   }
 
   async loadWords() {
@@ -95,6 +96,8 @@ export class GameScreen {
     if (input) {
       input.value = '';
       input.focus();
+      // 중복 바인딩 방지: 기존 이벤트 제거 후 바인딩
+      input.oninput = null;
       input.oninput = (e) => this.handleInput(e);
     }
 
@@ -107,14 +110,17 @@ export class GameScreen {
   }
 
   handleInput(e) {
+    if (this.isProcessing) return; // 정답 처리 중이면 무시
     this.userInput = e.target.value;
     if (this.userInput === this.currentWord) {
+      this.isProcessing = true;
       this.feedback = '정답!';
       document.getElementById('app').innerHTML = this.render();
       this.attachEvents();
       setTimeout(() => {
         this.feedback = '';
         this.handleCorrect();
+        this.isProcessing = false;
       }, 700);
       return;
     }
@@ -131,10 +137,10 @@ export class GameScreen {
   }
 
   handleCorrect() {
-    window.appSound.playCorrect();
-    this.correctCount++;
-    this.score += 10;
-    this.nextWord();
+  window.appSound.playCorrect();
+  this.correctCount++;
+  this.score += 10;
+  this.nextWord();
   }
 
   handleWrong() {
