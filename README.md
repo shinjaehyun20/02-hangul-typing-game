@@ -1,6 +1,22 @@
-# 장윤이 한글 타이핑 연습 게임 🐘
+# 장윤이 한글 타이핑 게임 🐘
 
-초등학생을 위한 재미있는 한글 타이핑 학습 게임입니다.
+> 낱말을 보고, 입력하고, 즉시 피드백 받는 초등학생용 한글 타이핑 학습 루프.
+
+[![Vanilla JS](https://img.shields.io/badge/stack-Vanilla%20JS-F7DF1E?logo=javascript&logoColor=111)](#기술-구조)
+[![Levels](https://img.shields.io/badge/levels-3-7C5CFC)](#사용-방법)
+[![Keyboard accessible](https://img.shields.io/badge/keyboard-accessible-00A86B)](#주요-기능)
+[![Play](https://img.shields.io/badge/play-GitHub%20Pages-FF6B6B)](https://shinjaehyun20.github.io/02-hangul-typing-game/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
+[![장윤이 한글 타이핑 게임의 학습 흐름](docs/assets/portfolio-hero.svg)](https://shinjaehyun20.github.io/02-hangul-typing-game/)
+
+**[한 번에 시작하기](https://shinjaehyun20.github.io/02-hangul-typing-game/)** · 설치 없음 · 기록은 내 브라우저에만 저장
+
+| 1. 난이도 선택 | 2. 낱말 입력 | 3. 결과 확인 |
+| --- | --- | --- |
+| 초급 · 중급 · 고급 | 즉시 정오답·효과음 피드백 | 정확도·점수·S~D 등급 |
+
+![실제 한글 타이핑 게임 시작 화면](docs/assets/product-preview.png)
 
 ## ✨ 주요 기능
 
@@ -17,9 +33,6 @@
 ### 간단한 방법 (Python 서버)
 
 ```bash
-# 웹 폴더로 이동
-cd web
-
 # Python 3가 설치되어 있다면
 python -m http.server 8000
 
@@ -35,12 +48,12 @@ python -m SimpleHTTPServer 8000
 2. `index.html` 파일에서 우클릭
 3. "Open with Live Server" 선택
 
-## 📁 프로젝트 구조
+## 기술 구조
 
 ```
-web/
-├── index.html              # 메인 HTML
-├── styles.css              # 전역 스타일
+./
+├── index.html             # 앱 셸
+├── styles.css             # 반응형 UI
 ├── data/
 │   └── words.json         # 단어 데이터
 ├── src/
@@ -59,7 +72,7 @@ web/
 └── README.md
 ```
 
-## 🎮 사용 방법
+## 사용 방법
 
 1. **시작하기**: 홈 화면에서 "시작하기" 버튼 클릭
 2. **레벨 선택**: 초급/중급/고급 중 하나 선택
@@ -83,7 +96,7 @@ web/
 - **단어 개수**: 10개/20개/30개
 - **기록 초기화**: 모든 학습 기록 삭제
 
-## 🛠️ 기술 스택
+## 기술 스택
 
 - **순수 JavaScript** (ES6+)
 - **HTML5 & CSS3**
@@ -104,7 +117,7 @@ MIT License
 
 ## 🎯 향후 개선 계획
 
-- [ ] 모바일 반응형 디자인
+- [x] 모바일 반응형 디자인
 - [ ] 타이핑 속도(WPM) 측정
 - [ ] 오답 단어 복습 모드
 - [ ] 실제 효과음 파일 추가
