@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shinjaehyun20.github.io/02-hangul-typing-game/sitemap.xml

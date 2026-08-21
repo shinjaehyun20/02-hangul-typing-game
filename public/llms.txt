@@ -1,0 +1,29 @@
+# 장윤이 한글 타이핑 게임 (Jangyoon's Hangul Typing Game)
+
+> A fun, interactive Hangul typing practice game designed for children.
+
+## Overview
+This is a web-based educational game to help children practice typing Korean words (Hangul). It features multiple difficulty levels (Beginner, Intermediate, Advanced), instant feedback with sound, and a grading system based on accuracy.
+
+## Key Features
+- **Difficulty Levels:** 3 levels (초급, 중급, 고급) tailored for different typing skills.
+- **Grading System:** Scores and grades (S, A, B, C, D) based on typing accuracy.
+- **Accessibility:** Fully playable using a keyboard.
+- **Audio Feedback:** Correct/incorrect sound effects.
+- **Local Storage:** Saves the highest score and grade locally in the browser.
+- **Settings:** Customizable word count, font size, and sound toggles.
+
+## Target Audience
+Primary school students and beginners learning to type in Korean (Hangul).
+
+## Access
+Play directly in the browser with no installation required.
+URL: https://shinjaehyun20.github.io/02-hangul-typing-game/
+
+## Technical Details
+- Built with Vanilla JavaScript (ES6+), HTML5, CSS3.
+- Uses Web Audio API for sound and localStorage for saving records.
+- Responsive design for various screen sizes.
+
+## Creator
+Created by Shin Jaehyun.
